@@ -1,0 +1,19 @@
+---
+
+- name: Install NTP
+  yum: name=ntp state=present
+  tags: ntp
+
+- name: Configure ntp file
+    templates: src=ntp.conf.j2 dest=/etc/ntp.conf
+    tags: ntp
+    notify: restart ntp
+
+- name: Start the NTP service
+  service: name=ntpd stste=started enabled=yes
+
+- name: test to see if selinux is running or not.
+  command: getenforce
+  register: sestatus
+  change_when: false
+  
